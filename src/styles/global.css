@@ -28,6 +28,7 @@ body {
 	color: rgb(var(--gray-dark));
 	font-size: 20px;
 	line-height: 1.7;
+	transition: background-color 0.2s ease, color 0.2s ease;
 }
 main {
 	width: 720px;
@@ -130,12 +131,32 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
 	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
+}
+
+/* Dark mode */
+:root[data-theme='dark'] {
+	color-scheme: dark;
+}
+:root[data-theme='dark'] body {
+	background: #0d0f14;
+	color: rgb(var(--gray-light));
+}
+:root[data-theme='dark'] h1,
+:root[data-theme='dark'] h2,
+:root[data-theme='dark'] h3,
+:root[data-theme='dark'] h4,
+:root[data-theme='dark'] h5,
+:root[data-theme='dark'] h6 {
+	color: #ffffff;
+}
+:root[data-theme='dark'] code {
+	background-color: rgb(var(--gray-dark));
+	color: rgb(var(--gray-light));
+}
+:root[data-theme='dark'] hr {
+	border-top-color: rgb(var(--gray-dark));
 }

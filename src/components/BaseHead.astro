@@ -33,6 +33,12 @@ const isNoIndex = import.meta.env.PUBLIC_NOINDEX === "true";
 />
 <meta name="generator" content={Astro.generator} />
 
+<!-- Apply saved dark/light theme before page renders, to avoid a flash -->
+<script is:inline>
+	const savedTheme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+	document.documentElement.setAttribute('data-theme', savedTheme);
+</script>
+
 <Font cssVariable="--font-atkinson" preload />
 
 <!-- Canonical URL -->
