@@ -55,9 +55,6 @@ const authorEntry = author ? await getEntry('authors', author) : undefined;
 			.last-updated-on {
 				font-style: italic;
 			}
-			.content-hr {
-				margin: 2em 0;
-			}
 			.author-box {
 				display: flex;
 				align-items: center;
@@ -93,11 +90,6 @@ const authorEntry = author ? await getEntry('authors', author) : undefined;
 				text-decoration: none;
 				font-size: 0.85em;
 			}
-			:root[data-theme='dark'] .author-box,
-			:root[data-theme='dark'] .categories a {
-				border-color: rgb(var(--gray-dark));
-				background: rgb(var(--gray-dark));
-			}
 		</style>
 	</head>
  
@@ -127,7 +119,7 @@ const authorEntry = author ? await getEntry('authors', author) : undefined;
  
 					<slot />
  
-					<hr class="content-hr" />
+					<hr />
  
 					{
 						authorEntry && (

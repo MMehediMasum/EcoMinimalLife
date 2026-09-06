@@ -2,7 +2,7 @@
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
-
+ 
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
@@ -48,13 +48,13 @@ import HeaderLink from './HeaderLink.astro';
 <script>
 	const button = document.getElementById('theme-toggle');
 	const icon = document.getElementById('theme-icon');
-
+ 
 	function syncIcon() {
 		const current = document.documentElement.getAttribute('data-theme');
 		if (icon) icon.textContent = current === 'dark' ? '☀️' : '🌙';
 	}
 	syncIcon();
-
+ 
 	button?.addEventListener('click', () => {
 		const current = document.documentElement.getAttribute('data-theme');
 		const next = current === 'dark' ? 'light' : 'dark';
@@ -74,7 +74,7 @@ import HeaderLink from './HeaderLink.astro';
 		margin: 0;
 		font-size: 1em;
 	}
-
+ 
 	h2 a,
 	h2 a.active {
 		text-decoration: none;
@@ -86,7 +86,7 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	nav a {
 		padding: 1em 0.5em;
-		color: var(--black);
+		color: rgb(var(--black));
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
 	}
@@ -114,8 +114,5 @@ import HeaderLink from './HeaderLink.astro';
 	:root[data-theme='dark'] header {
 		background: #14161c;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 40%);
-	}
-	:root[data-theme='dark'] nav a {
-		color: rgb(var(--gray-light));
 	}
 </style>
