@@ -23,9 +23,6 @@ const authorEntry = author ? await getEntry('authors', author) : undefined;
 				max-width: 100%;
 				margin: 0;
 			}
-			.hero-image {
-				width: 100%;
-			}
 			.hero-image img {
 				display: block;
 				margin: 0 auto;
@@ -41,7 +38,7 @@ const authorEntry = author ? await getEntry('authors', author) : undefined;
 			}
 			.title {
 				margin-bottom: 1em;
-				padding: 1em 0;
+				padding: 1em 0 0;
 				text-align: center;
 				line-height: 1;
 			}
@@ -97,11 +94,9 @@ const authorEntry = author ? await getEntry('authors', author) : undefined;
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
 				<div class="prose">
 					<div class="title">
+						<h1>{title}</h1>
 						<div class="date">
 							<FormattedDate date={pubDate} />
 							{readingTime && <span> ~ {readingTime} min read</span>}
@@ -113,9 +108,16 @@ const authorEntry = author ? await getEntry('authors', author) : undefined;
 								)
 							}
 						</div>
-						<h1>{title}</h1>
 						<hr />
 					</div>
+ 
+					{
+						heroImage && (
+							<div class="hero-image">
+								<Image width={1020} height={510} src={heroImage} alt="" />
+							</div>
+						)
+					}
  
 					<slot />
  
