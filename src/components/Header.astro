@@ -10,7 +10,7 @@ const categories = [...new Set(posts.flatMap((post) => post.data.categories))].s
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
+		<div class="internal-links" id="internal-links">
 			<HeaderLink href="/">Home</HeaderLink>
 			<div class="dropdown">
 				<button
@@ -39,6 +39,9 @@ const categories = [...new Set(posts.flatMap((post) => post.data.categories))].s
 		<div class="header-actions">
 			<button id="theme-toggle" aria-label="Toggle dark mode" type="button">
 				<span id="theme-icon">🌙</span>
+			</button>
+			<button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" type="button">
+				<span></span><span></span><span></span>
 			</button>
 		</div>
 	</nav>
@@ -73,6 +76,37 @@ const categories = [...new Set(posts.flatMap((post) => post.data.categories))].s
 	document.addEventListener('click', () => {
 		catMenu?.classList.remove('open');
 		catTrigger?.setAttribute('aria-expanded', 'false');
+	});
+
+	const mobileToggle = document.getElementById('mobile-menu-toggle');
+	const internalLinks = document.getElementById('internal-links');
+
+	mobileToggle?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		const isOpen = internalLinks?.classList.toggle('mobile-open');
+		mobileToggle.setAttribute('aria-expanded', String(!!isOpen));
+		mobileToggle.classList.toggle('active', !!isOpen);
+	});
+
+	internalLinks?.addEventListener('click', (e) => {
+		const target = e.target;
+		if (target instanceof HTMLElement && target.tagName === 'A') {
+			internalLinks.classList.remove('mobile-open');
+			mobileToggle?.setAttribute('aria-expanded', 'false');
+			mobileToggle?.classList.remove('active');
+		}
+	});
+
+	document.addEventListener('click', (e) => {
+		if (
+			internalLinks?.classList.contains('mobile-open') &&
+			!internalLinks.contains(e.target) &&
+			e.target !== mobileToggle
+		) {
+			internalLinks.classList.remove('mobile-open');
+			mobileToggle?.setAttribute('aria-expanded', 'false');
+			mobileToggle?.classList.remove('active');
+		}
 	});
 </script>
 <style>
@@ -204,11 +238,89 @@ const categories = [...new Set(posts.flatMap((post) => post.data.categories))].s
 		padding: 0.5em;
 		line-height: 1;
 	}
+	.mobile-menu-toggle {
+		display: none;
+		flex-direction: column;
+		justify-content: center;
+		gap: 4px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5em;
+		margin-left: 0.3em;
+	}
+	.mobile-menu-toggle span {
+		display: block;
+		width: 20px;
+		height: 2px;
+		background: rgb(var(--black));
+		transition: transform 0.2s ease, opacity 0.2s ease;
+	}
+	.mobile-menu-toggle.active span:nth-child(1) {
+		transform: translateY(6px) rotate(45deg);
+	}
+	.mobile-menu-toggle.active span:nth-child(2) {
+		opacity: 0;
+	}
+	.mobile-menu-toggle.active span:nth-child(3) {
+		transform: translateY(-6px) rotate(-45deg);
+	}
 	:root[data-theme='dark'] header {
 		background: #14161c;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 40%);
 	}
 	:root[data-theme='dark'] .dropdown-menu {
 		background: #14161c;
+	}
+	:root[data-theme='dark'] .mobile-menu-toggle span {
+		background: rgb(var(--black));
+	}
+
+	@media (max-width: 640px) {
+		nav {
+			flex-wrap: wrap;
+		}
+		.mobile-menu-toggle {
+			display: flex;
+		}
+		.internal-links {
+			display: none;
+			flex-direction: column;
+			align-items: stretch;
+			width: 100%;
+			order: 3;
+			padding: 0.5em 0 1em 0;
+		}
+		.internal-links.mobile-open {
+			display: flex;
+		}
+		.internal-links > :global(a) {
+			margin-left: 0;
+			padding: 0.8em 0;
+		}
+		.internal-links > :global(a::after) {
+			display: none;
+		}
+		.dropdown {
+			width: 100%;
+		}
+		.dropdown-trigger {
+			width: 100%;
+			text-align: left;
+			margin-left: 0;
+			padding: 0.8em 0;
+		}
+		.dropdown-menu {
+			position: static;
+			box-shadow: none;
+			opacity: 1;
+			visibility: visible;
+			transform: none;
+			display: none;
+			padding-left: 1em;
+		}
+		.dropdown-menu.open {
+			display: block;
+		}
 	}
 </style>
