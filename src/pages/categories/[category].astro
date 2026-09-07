@@ -123,7 +123,7 @@ const [featuredPost, ...restPosts] = postsInCategory;
 					) : (
 						<ul>
 							<li class="featured">
-								<a href={`/blog/${featuredPost.id}/`}>
+								<a href={`/${featuredPost.id}/`}>
 									{featuredPost.data.heroImage && (
 										<Image width={960} height={480} src={featuredPost.data.heroImage} alt="" />
 									)}
@@ -135,7 +135,7 @@ const [featuredPost, ...restPosts] = postsInCategory;
 							</li>
 							{restPosts.map((post) => (
 								<li>
-									<a href={`/blog/${post.id}/`}>
+									<a href={`/${post.id}/`}>
 										{post.data.heroImage && (
 											<Image width={480} height={280} src={post.data.heroImage} alt="" />
 										)}
