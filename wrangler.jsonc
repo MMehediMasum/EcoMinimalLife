@@ -2,6 +2,7 @@
   "name": "my-test-site",
   "compatibility_date": "2026-08-29",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "not_found_handling": "404-page"
   }
 }
