@@ -1,6 +1,7 @@
 ---
 title: 'Second post'
 description: 'Lorem ipsum dolor sit amet'
+categories: ["Sustainability", "Test"]
 pubDate: 'Jul 15 2022'
 heroImage: '../../assets/casual-life-3d-meditation-crystal.webp'
 ---

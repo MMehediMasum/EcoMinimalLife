@@ -1,6 +1,7 @@
 ---
 title: 'Third post'
 description: 'Lorem ipsum dolor sit amet'
+categories: ["Sustainability", "Test"]
 pubDate: 'Jul 22 2022'
 heroImage: '../../assets/casual-life-3d-likes.webp'
 ---
