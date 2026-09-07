@@ -156,11 +156,12 @@ hr {
    that already uses --black / --gray-dark / --gray-light automatically
    reads correctly, with no need to touch each component's own CSS. */
 :root[data-theme='dark'] {
-    	--black: 245, 246, 250;
-    	--gray: 148, 163, 184;
-    	--gray-light: 34, 41, 57;
-    	--gray-dark: 226, 232, 240;
-    	color-scheme: dark;
+	--black: 245, 246, 250;
+	--gray: 148, 163, 184;
+	--gray-light: 34, 41, 57;
+	--gray-dark: 226, 232, 240;
+	--gray-gradient: rgba(var(--gray-light), 50%), #0d0f14;
+	color-scheme: dark;
 }
 :root[data-theme='dark'] body {
     	background: #0d0f14;
