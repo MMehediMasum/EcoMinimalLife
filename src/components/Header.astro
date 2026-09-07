@@ -1,13 +1,39 @@
 ---
+import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+
+const posts = await getCollection('blog');
+const categories = [...new Set(posts.flatMap((post) => post.data.categories))].sort();
 ---
- 
+
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
 		<div class="internal-links">
 			<HeaderLink href="/">Home</HeaderLink>
+			<div class="dropdown">
+				<button
+					id="categories-trigger"
+					class="dropdown-trigger"
+					type="button"
+					aria-haspopup="true"
+					aria-expanded="false"
+				>
+					Categories
+				</button>
+				<ul id="categories-menu" class="dropdown-menu">
+					{
+						categories.map((category) => (
+							<li>
+								<a href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}/`}>
+									{category}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
 			<HeaderLink href="/about">About</HeaderLink>
 		</div>
 		<div class="header-actions">
@@ -18,21 +44,35 @@ import HeaderLink from './HeaderLink.astro';
 	</nav>
 </header>
 <script>
-	const button = document.getElementById('theme-toggle');
-	const icon = document.getElementById('theme-icon');
- 
+	const themeButton = document.getElementById('theme-toggle');
+	const themeIcon = document.getElementById('theme-icon');
+
 	function syncIcon() {
 		const current = document.documentElement.getAttribute('data-theme');
-		if (icon) icon.textContent = current === 'dark' ? '☀️' : '🌙';
+		if (themeIcon) themeIcon.textContent = current === 'dark' ? '☀️' : '🌙';
 	}
 	syncIcon();
- 
-	button?.addEventListener('click', () => {
+
+	themeButton?.addEventListener('click', () => {
 		const current = document.documentElement.getAttribute('data-theme');
 		const next = current === 'dark' ? 'light' : 'dark';
 		document.documentElement.setAttribute('data-theme', next);
 		localStorage.setItem('theme', next);
 		syncIcon();
+	});
+
+	const catTrigger = document.getElementById('categories-trigger');
+	const catMenu = document.getElementById('categories-menu');
+
+	catTrigger?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		const isOpen = catMenu?.classList.toggle('open');
+		catTrigger.setAttribute('aria-expanded', String(!!isOpen));
+	});
+
+	document.addEventListener('click', () => {
+		catMenu?.classList.remove('open');
+		catTrigger?.setAttribute('aria-expanded', 'false');
 	});
 </script>
 <style>
@@ -57,8 +97,9 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	.internal-links {
 		display: flex;
+		align-items: center;
 	}
-	.internal-links a {
+	.internal-links > :global(a) {
 		position: relative;
 		padding: 1em 0.5em;
 		margin-left: 10px;
@@ -70,10 +111,10 @@ import HeaderLink from './HeaderLink.astro';
 		opacity: 0.7;
 		transition: opacity 0.2s ease;
 	}
-	.internal-links a.active {
+	.internal-links > :global(a.active) {
 		opacity: 1;
 	}
-	.internal-links a::after {
+	.internal-links > :global(a::after) {
 		content: '';
 		position: absolute;
 		left: 0.5em;
@@ -85,12 +126,71 @@ import HeaderLink from './HeaderLink.astro';
 		transform-origin: left;
 		transition: transform 0.25s ease;
 	}
-	.internal-links a:hover::after {
+	.internal-links > :global(a:hover::after) {
 		transform: scaleX(1);
 	}
-	.internal-links a.active::after {
+	.internal-links > :global(a.active::after) {
 		transform: scaleX(1);
 		background: var(--accent);
+	}
+	.dropdown {
+		position: relative;
+	}
+	.dropdown-trigger {
+		background: none;
+		border: none;
+		font-family: inherit;
+		cursor: pointer;
+		padding: 1em 0.5em;
+		margin-left: 10px;
+		color: rgb(var(--black));
+		text-transform: uppercase;
+		font-weight: 700;
+		font-size: 0.85em;
+		opacity: 0.7;
+		transition: opacity 0.2s ease;
+	}
+	.dropdown-trigger:hover,
+	.dropdown-trigger[aria-expanded='true'] {
+		opacity: 1;
+	}
+	.dropdown-menu {
+		position: absolute;
+		top: 100%;
+		left: 10px;
+		min-width: 160px;
+		margin: 0;
+		padding: 0.5em 0;
+		list-style: none;
+		background: white;
+		border-radius: 8px;
+		box-shadow: var(--box-shadow);
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-6px);
+		transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+		z-index: 20;
+	}
+	.dropdown-menu.open {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+	.dropdown-menu li {
+		margin: 0;
+	}
+	.dropdown-menu a {
+		display: block;
+		padding: 0.5em 1em;
+		color: rgb(var(--black));
+		text-decoration: none;
+		text-transform: none;
+		font-weight: 400;
+		font-size: 1em;
+	}
+	.dropdown-menu a:hover {
+		background: rgb(var(--gray-light));
+		color: var(--accent);
 	}
 	.header-actions {
 		display: flex;
@@ -107,5 +207,8 @@ import HeaderLink from './HeaderLink.astro';
 	:root[data-theme='dark'] header {
 		background: #14161c;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 40%);
+	}
+	:root[data-theme='dark'] .dropdown-menu {
+		background: #14161c;
 	}
 </style>
